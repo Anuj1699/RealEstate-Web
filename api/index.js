@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
+import userRouter from "./router/userRouter.js"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -14,10 +15,7 @@ mongoose.connect(process.env.MONGO).then(() => console.log("Connection Successfu
 .catch((err) => console.log(err))
 
 const app = express();
-
-app.get("/", (req, res) => {
-    res.send("Hello");
-});
+app.use('/api/user/',userRouter);
 
 app.listen(3000, () => {
     console.log("Port 3000 running...");
