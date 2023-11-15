@@ -7,7 +7,6 @@ import { dirname, resolve } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Adjust the path to your .env file based on its location
 const envPath = resolve(__dirname, '../.env');
 dotenv.config({ path: envPath });
 
