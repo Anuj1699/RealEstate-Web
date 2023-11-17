@@ -5,6 +5,7 @@ import axios from "axios"
 export default function SignUp() {
   const [formData,setFormData] = useState({})
   const [loading, setLoading] = useState(false);
+  const [error,setError] = useState(null)
   const navigate = useNavigate();
 
   const handleChange = (e)=>{
@@ -29,7 +30,10 @@ export default function SignUp() {
       navigate('/sign-in')
     } catch (error) {
       setLoading(false)
-      console.error('Error:', error);
+      if (error.response.data.success === false) {
+        setLoading(false);
+        setError(error.response.data.message);
+      } 
     }
   };
   return (
@@ -47,6 +51,7 @@ export default function SignUp() {
            <span className=" text-blue-700">Sign In</span>
         </Link>
       </div>
+      {error && <p className="text-red-500">{error}</p>}
     </div>
   )
 }
