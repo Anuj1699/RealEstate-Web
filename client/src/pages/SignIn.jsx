@@ -7,6 +7,7 @@ import {
   signInSuccess,
   signInFailure,
 } from "../redux/userSlice/userSlice";
+import OAuth from "../components/oAuth";
 
 export default function SignIn() {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ export default function SignIn() {
       if (error.response.data.success === false) {
         dispatch(signInFailure(error.response.data.message));
       }
+      dispatch(signInFailure(error.response.data.message))
     }
   };
   return (
@@ -65,6 +67,7 @@ export default function SignIn() {
         >
           {loading ? "loading..." : "Sign In"}
         </button>
+        <OAuth/>
       </form>
       <div className="flex gap-2 mt-3">
         <p>Don't Have an account?</p>
