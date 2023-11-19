@@ -1,13 +1,12 @@
 import { useState } from "react"
 import { Link,useNavigate} from "react-router-dom"
 import axios from "axios"
-import {useDispatch,useSelector} from 'react-redux'
-import { signInStart, signInSuccess, signInFailure } from "../redux/userSlice/userSlice"
+import OAuth from "../components/oAuth"
 
 export default function SignUp() {
-  const dispatch = useDispatch();
   const [formData,setFormData] = useState({})
-  const {loading,error} = useSelector((state) => state.user)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
   const navigate = useNavigate();
 
   const handleChange = (e)=>{
@@ -21,19 +20,21 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      dispatch(signInStart())
+      setLoading(true);
       const response = await axios.post("/api/auth/signup", formData, {
         headers: {
           'Content-Type': "application/json",
         },
       });
-      dispatch(signInSuccess(response.data));
+      setLoading(false);
+      setError(null);
       navigate('/sign-in');
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       if (error.response.data.success === false) {
-        dispatch(signInFailure(error.response.data.message))
-      } 
+        setError(error.response.data.message);
+      }
+      setError(error.response.data.message)
     }
   };
   return (
@@ -44,6 +45,7 @@ export default function SignUp() {
         <input type="text" placeholder='email' name="email" className='border p-3 rounded-lg' id="email" onChange={handleChange}/>
         <input type="text" placeholder='password' name="password" className='border p-3 rounded-lg' id="password" onChange={handleChange}/>
         <button disabled={loading} className=' bg-slate-600 rounded-lg p-3 uppercase text-white hover:opacity-95 disabled:opacity-80'>{loading ? "loading..." : "Sign Up"}</button>
+        <OAuth/>
       </form>
       <div className="flex gap-2 mt-3">
         <p>Have an account?</p>
