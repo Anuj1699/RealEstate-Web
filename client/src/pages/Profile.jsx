@@ -62,7 +62,7 @@ export default function Profile() {
         />
         <p className="text-center">
           {fileUploadError ? (
-            <span className=" text-red-700">Error Upload Image</span>
+            <span className=" text-red-700">Error Upload Image(image should be less than 2mb)</span>
           ) : filePerc > 0 && filePerc < 100 ? (
             <span className="text-slate-700">{`Uploading ${filePerc}%`}</span>
           ) : filePerc === 100 ? (
@@ -91,7 +91,7 @@ export default function Profile() {
           name="password"
           className="border rounded-lg p-3"
         />
-        <button className=" uppercase bg-slate-700 rounded-lg p-3 text-white hover:opacity-90 disabled:opacity-70">
+        <button type="button" className=" uppercase bg-slate-700 rounded-lg p-3 text-white hover:opacity-90 disabled:opacity-70">
           update
         </button>
       </form>

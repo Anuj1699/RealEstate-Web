@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
 import userRouter from "./router/userRouter.js"
 import authRouter from "./router/authRouter.js"
+import cookieParser from "cookie-parser";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -16,9 +17,11 @@ dotenv.config({ path: envPath });
 mongoose.connect(process.env.MONGO).then(() => console.log("Connection Successful"))
 .catch((err) => console.log(err))
 
+app.use(cookieParser());
 app.use(express.json());
 app.use('/api/user/',userRouter);
 app.use('/api/auth/',authRouter);
+
 
 app.use((err,req,res,next) =>{
     const statuscode = err.statuscode || 500;

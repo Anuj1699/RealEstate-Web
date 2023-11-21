@@ -23,7 +23,6 @@ export default function OAuth() {
         header : "application/json"
       })
       navigate('/');
-      console.log(res.data);
       dispatch(signInSuccess(res.data));
     } catch (error) {
       console.log('could not signin with google', error);
