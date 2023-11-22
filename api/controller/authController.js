@@ -17,6 +17,7 @@ export const signup = async (req, res, next) => {
 
 export const signin = async (req, res, next) => {
     const { email, password } = req.body;
+    const thirtyDaysInMilliseconds = 30 * 24 * 60 * 60 * 1000;
     try {
         const validUser = await User.findOne({ email });
         if (!validUser) {
@@ -28,7 +29,7 @@ export const signin = async (req, res, next) => {
         }
         const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
         const { password: pass, ...rest } = validUser._doc;
-        res.cookie('access_token', token, { httpOnly: true })
+        res.cookie('access_token', token,{maxAge : thirtyDaysInMilliseconds},{ httpOnly: true })
             .status(200)
             .json(rest)
     } catch (error) {
