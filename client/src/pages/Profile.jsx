@@ -6,6 +6,9 @@ import {
   deleteUserFailure,
   deleteUserStart,
   deleteUserSuccess,
+  logOutUserFailure,
+  logOutUserStart,
+  logOutUserSuccess,
 } from "../redux/userSlice/userSlice.js";
 import { useRef, useState, useEffect } from "react";
 import { app } from "./../firebase";
@@ -84,13 +87,25 @@ export default function Profile() {
   const handleDelete = async () => {
     try {
       dispatch(deleteUserStart());
-      const res = await axios.delete(`/api/user/delete/${currentUser._id}`)
+      const res = await axios.delete(`/api/user/delete/${currentUser._id}`);
       dispatch(deleteUserSuccess());
     } catch (error) {
-      if(error.response.data.success === false){
-         dispatch(deleteUserFailure(error.response.data.message));
+      if (error.response.data.success === false) {
+        dispatch(deleteUserFailure(error.response.data.message));
       }
       dispatch(deleteUserFailure(error.response.data.message));
+    }
+  };
+  const handleLogOut = async () => {
+    try {
+      dispatch(logOutUserStart());
+      const res = await axios.get('/api/auth/signout');
+      dispatch(logOutUserSuccess());
+    } catch (error) {
+      if(error.response.data.success === false){
+        dispatch(logOutUserFailure(error.response.data.message));
+      }
+      dispatch(logOutUserFailure(error.response.data.message));
     }
   };
   const fileRef = useRef(null);
@@ -157,7 +172,7 @@ export default function Profile() {
       </form>
       <div className="flex justify-between mt-3 text-red-600 cursor-pointer">
         <span onClick={handleDelete}>Delete Account</span>
-        <span>SignOut</span>
+        <span onClick={handleLogOut}>SignOut</span>
       </div>
       <p className="text-red-700 text-center">{error ? error : ""}</p>
       <p className=" text-green-700 text-center">
