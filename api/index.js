@@ -6,6 +6,7 @@ import { dirname, resolve } from 'path';
 import userRouter from "./router/userRouter.js"
 import authRouter from "./router/authRouter.js"
 import cookieParser from "cookie-parser";
+import listingRouter from "./router/listingRouter.js"
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -21,6 +22,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use('/api/user/',userRouter);
 app.use('/api/auth/',authRouter);
+app.use('/api/listing/',listingRouter);
 
 
 app.use((err,req,res,next) =>{
