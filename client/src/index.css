@@ -1,8 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300&family=Lora:ital,wght@1,500&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;1,100;1,200;1,300;1,400&family=Poppins:wght@200&family=Quicksand&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body{
     background-color: rgb(241, 245, 241);
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }

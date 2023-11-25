@@ -13,6 +13,7 @@ import {
 import { useRef, useState, useEffect } from "react";
 import { app } from "./../firebase";
 import axios from "axios";
+import {Link} from "react-router-dom";
 import {
   getDownloadURL,
   getStorage,
@@ -99,10 +100,10 @@ export default function Profile() {
   const handleLogOut = async () => {
     try {
       dispatch(logOutUserStart());
-      const res = await axios.get('/api/auth/signout');
+      const res = await axios.get("/api/auth/signout");
       dispatch(logOutUserSuccess());
     } catch (error) {
-      if(error.response.data.success === false){
+      if (error.response.data.success === false) {
         dispatch(logOutUserFailure(error.response.data.message));
       }
       dispatch(logOutUserFailure(error.response.data.message));
@@ -169,6 +170,7 @@ export default function Profile() {
         >
           {loading ? "loading..." : "Update"}
         </button>
+        <Link to={"/create-listing"} className="uppercase bg-green-700 rounded-lg p-3 text-white text-center hover:opacity-95">Create Listing</Link>
       </form>
       <div className="flex justify-between mt-3 text-red-600 cursor-pointer">
         <span onClick={handleDelete}>Delete Account</span>
