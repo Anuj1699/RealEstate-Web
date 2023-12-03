@@ -13,7 +13,7 @@ const listingSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    reguralPrice : {
+    regularPrice : {
         type : Number,
         required : true
     },
