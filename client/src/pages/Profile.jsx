@@ -28,6 +28,7 @@ export default function Profile() {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
   const [successUpdate, setSuccessUpdate] = useState(false);
+  const [userListings, setUserListing] = useState([]);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -180,6 +181,7 @@ export default function Profile() {
       <p className=" text-green-700 text-center">
         {successUpdate ? "User Updated Successfully" : ""}
       </p>
+    <Link to={"/show-listings"} className="text-green-700 flex justify-center">Show Listings</Link>
     </div>
   );
 }
