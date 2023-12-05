@@ -35,9 +35,12 @@ const ShowListings = () => {
           "Content-Type": "application/json",
         },
       });
+      setError(null)
       showListings();
     } catch (error) {
-
+      if(error.response.data.success === false){
+        setError(error.response.data.message);
+      }
     }
   };
 
@@ -78,7 +81,7 @@ const ShowListings = () => {
                 >
                   Delete
                 </button>
-                <button className="text-green-700 uppercase">Edit</button>
+                <Link className="text-green-700 uppercase" to={`/edit-listing/${data._id}`}>Edit</Link>
               </div>
             </div>
           ))
