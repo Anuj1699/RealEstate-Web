@@ -43,8 +43,16 @@ export const editListing = async (req, res, next) => {
             req.body,
             { new: true }
         )
-        res.status(404).json(updatedUser);
+        res.status(201).json(updatedUser);
     } catch (error) {
         next(error);
     }
 }
+
+export const getListing = async(req,res,next) =>{
+    const listing = await Listing.findById(req.params.id);
+    if(!listing){
+        return next(errorHandler(404,"Listing not found"))
+    }
+    res.json(listing);
+} 
