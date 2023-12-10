@@ -3,7 +3,7 @@ import {getDownloadURL, getStorage, uploadBytesResumable, ref} from "firebase/st
 import {app} from "../firebase"
 import axios from "axios"
 import { useSelector } from 'react-redux';
-import { Navigate, useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 
 export default function CreateListing() {
   const [files, setFiles] = useState([]);
