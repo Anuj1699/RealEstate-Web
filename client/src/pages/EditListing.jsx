@@ -15,7 +15,7 @@ export default function EditListing() {
     name : "",
     description : "",
     address : "",
-    type : "sell",
+    type : "sale",
     bedrooms : 1,
     bathrooms : 1,
     regularPrice : 2500,
@@ -81,7 +81,7 @@ export default function EditListing() {
   }
   const handleChange = (e) =>{
     const {name,checked,type,value} = e.target;
-    if(name === "sell" || name === "rent"){
+    if(name === "sale" || name === "rent"){
       setFormData({
         ...formData,
         type : name
@@ -177,9 +177,9 @@ export default function EditListing() {
             />
             <div className="flex flex-wrap gap-6">
               <div className="flex flex-row gap-2">
-                <input type="checkbox" name="sell" className="w-5" onChange={handleChange}
-              checked={formData.type === "sell"}/>
-                <span>Sell</span>
+                <input type="checkbox" name="sale" className="w-5" onChange={handleChange}
+              checked={formData.type === "sale"}/>
+                <span>Sale</span>
               </div>
               <div className="flex flex-row gap-2">
                 <input type="checkbox" name="rent" className="w-5" onChange={handleChange}
