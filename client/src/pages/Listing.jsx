@@ -8,12 +8,16 @@ import { FaBed, FaParking } from "react-icons/fa";
 import { GiBathtub } from "react-icons/gi";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdChair, MdOutlineDiscount } from "react-icons/md";
+import { useSelector } from "react-redux";
+import { Contact } from "./Contact";
 
 const Listing = () => {
   const [listing, setListing] = useState(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [contact, setContact] = useState(false);
   const params = useParams();
+  const { currentUser } = useSelector((state) => state.user);
   useEffect(() => {
     const listingData = async () => {
       try {
@@ -34,7 +38,7 @@ const Listing = () => {
     listingData();
   }, [params.id]);
   return (
-    <main className="mx-auto max-w-7xl p-1">
+    <main className="mx-auto max-w-7xl p-1 my-14">
       <div>
         {loading && (
           <h1 className="text-center my-52 font-bold text-4xl">Loading...</h1>
@@ -63,7 +67,7 @@ const Listing = () => {
         </Carousel>
       </div>
       {listing ? (
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col justify-center gap-5">
           <div className="flex items-center gap-1">
             <GoDotFill />
             <span
@@ -73,17 +77,23 @@ const Listing = () => {
             >{`For ${listing.type}`}</span>
           </div>
           <div className="flex gap-5 items-center mt-3">
-            <h1 className="font-extrabold text-4xl">{listing.name}</h1>
-            <h1 className=" font-bold text-2xl tracking-wide">{`${
-              listing.type === "sale"
-                ? "₹ " + listing.regularPrice
-                : listing.regularPrice + " ₹ / month"
-            }`}</h1>
+            <h1 className="font-extrabold text-3xl">{listing.name + " -"}</h1>
+            <h1 className=" font-bold text-2xl tracking-wide">
+              {
+                listing.offer
+                  ? listing.type === "sale"
+                    ? `₹ ${listing.discountedPrice}` 
+                    : `${listing.discountedPrice} ₹ /month` 
+                  : listing.type === "sale"
+                  ? `${listing.regularPrice}` 
+                  : `${listing.regularPrice} ₹ /month`
+              }
+            </h1>
           </div>
-          <div className="flex items-center bg-red-800 max-w-sm rounded-lg text-white gap-1 p-2">
+          <div className="flex items-center bg-red-800 max-w-xs rounded-lg text-white gap-1 p-2">
             <MdOutlineDiscount size={20} />
             <span>
-              {`₹ ${listing.regularPrice - listing.discountedPrice}`}  Discount
+              {`₹ ${listing.regularPrice - listing.discountedPrice}`} Discount
             </span>
           </div>
           <div className="flex items-center gap-5 flex-wrap">
@@ -118,6 +128,15 @@ const Listing = () => {
               {listing.description}
             </span>
           </p>
+          {currentUser && currentUser._id == listing.userRef && !contact && (
+            <button
+              onClick={() => setContact(true)}
+              className="uppercase bg-slate-700 p-3 rounded-lg text-white w-full mx-auto mt-5 lg:w-4/5 hover:opacity-90"
+            >
+              Contact Landlord
+            </button>
+          )}
+          {contact && <Contact listing={listing} />}
         </div>
       ) : (
         <h1>Loading....</h1>

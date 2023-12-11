@@ -245,7 +245,7 @@ export default function EditListing() {
                   />
                   <div className="flex flex-col">
                     <span>Regular Price</span>
-                    <span className="text-sm">{formData.type === "sell" ? " " : "₹ / month"}</span>
+                    <span className="text-sm">{formData.type === "sale" ? " " : "₹ / month"}</span>
                   </div>
                 </div>
                 {formData.offer && (
@@ -260,7 +260,7 @@ export default function EditListing() {
                   />
                   <div className="flex flex-col">
                     <span>Discounted Price</span>
-                    <span className="text-sm">{formData.type === "sell" ? " " : "₹ / month"}</span>
+                    <span className="text-sm">{formData.type === "sale" ? " " : "₹ / month"}</span>
                   </div>
                 </div>
                 )}

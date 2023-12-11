@@ -48,3 +48,16 @@ export const showUserListing = async(req,res,next) =>{
         next(errorHandler(404,"you can see only your listing"))
     }
 }
+
+export const getUser = async(req,res,next) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if(!user){
+            next(errorHandler(404,"User Not Found"));
+        }
+        const {password : pass, ...rest} = user._doc;
+        res.json(rest);
+    } catch (error) {
+        next(error);
+    }
+}

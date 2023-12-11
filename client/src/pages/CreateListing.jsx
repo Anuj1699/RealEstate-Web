@@ -163,7 +163,7 @@ export default function CreateListing() {
             />
             <div className="flex flex-wrap gap-6">
               <div className="flex flex-row gap-2">
-                <input type="checkbox" name="sell" className="w-5" onChange={handleChange}
+                <input type="checkbox" name="sale" className="w-5" onChange={handleChange}
               checked={formData.type === "sale"}/>
                 <span>Sale</span>
               </div>
@@ -231,7 +231,7 @@ export default function CreateListing() {
                   />
                   <div className="flex flex-col">
                     <span>Regular Price</span>
-                    <span className="text-sm">{formData.type === "sell" ? " " : "₹ / month"}</span>
+                    <span className="text-sm">{formData.type === "sale" ? " " : "₹ / month"}</span>
                   </div>
                 </div>
                 {formData.offer && (
@@ -246,7 +246,7 @@ export default function CreateListing() {
                   />
                   <div className="flex flex-col">
                     <span>Discounted Price</span>
-                    <span className="text-sm">{formData.type === "sell" ? " " : "₹ / month"}</span>
+                    <span className="text-sm">{formData.type === "sale" ? " " : "₹ / month"}</span>
                   </div>
                 </div>
                 )}

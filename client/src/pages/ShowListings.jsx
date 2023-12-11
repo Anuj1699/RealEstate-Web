@@ -73,7 +73,7 @@ const ShowListings = () => {
                   {data.name.slice(0, 30)}
                 </h1>
               </div>
-              <p className="my-1">{`${data.description.slice(0, 100)}...`}</p>
+              <p className="my-1">{`${data.description.slice(0, 80)}...`}</p>
               <div className="flex justify-between">
                 <button
                   className="text-red-700 uppercase"
