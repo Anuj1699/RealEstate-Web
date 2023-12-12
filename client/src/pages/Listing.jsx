@@ -128,7 +128,7 @@ const Listing = () => {
               {listing.description}
             </span>
           </p>
-          {currentUser && currentUser._id == listing.userRef && !contact && (
+          {currentUser && currentUser._id !== listing.userRef && !contact && (
             <button
               onClick={() => setContact(true)}
               className="uppercase bg-slate-700 p-3 rounded-lg text-white w-full mx-auto mt-5 lg:w-4/5 hover:opacity-90"

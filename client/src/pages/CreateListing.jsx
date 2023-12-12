@@ -60,7 +60,6 @@ export default function CreateListing() {
         (snapshot) =>{
           setImageUploadError(false);
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(progress);
         },
         (error) =>{
           reject(error)
@@ -105,7 +104,7 @@ export default function CreateListing() {
   const handleSubmit = async(e) =>{
     e.preventDefault()
     try {
-      if(formData.regularPrice < formData.discountedPrice) return setError("discounted price must be lower than regular price");
+      if(parseInt(formData.regularPrice) < parseInt(formData.discountedPrice)) return setError("discounted price must be lower than regular price");
       setLoading(true);
       setError(null);
       const res = await axios.post('/api/listing/create', {...formData,userRef : currentUser._id},{
@@ -224,7 +223,6 @@ export default function CreateListing() {
                     className="rounded-lg border p-3 border-gray-300"
                     name="regularPrice"
                     min="2500"
-                    max="10000000"
                     onChange={handleChange}
                     value={formData.regularPrice}
                     required
