@@ -58,12 +58,12 @@ const ShowListings = () => {
         ) : (
           userListing.map((data) => (
             <div
-              className="border rounded-lg shadow-lg w-80 h-80 p-3 flex flex-col justify-between"
+              className="border rounded-lg shadow-lg w-80 p-2 h-80 flex flex-col justify-between hover:-translate-y-3 ease-in-out duration-500"
               key={data._id}
             >
               <Link to={`/listing/${data._id}`}>
                 <img
-                  className="object-cover w-full h-40 border rounded-lg mb-1 cursor-pointer"
+                  className="object-cover w-full h-40 border mb-1 cursor-pointer"
                   src={data.imageUrls[0]}
                   alt="House-Image"
                 />
