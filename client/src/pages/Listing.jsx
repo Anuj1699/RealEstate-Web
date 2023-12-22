@@ -78,16 +78,14 @@ const Listing = () => {
           </div>
           <div className="flex gap-5 items-center mt-3">
             <h1 className="font-extrabold text-3xl">{listing.name + " -"}</h1>
-            <h1 className=" font-bold text-2xl tracking-wide">
-              {
-                listing.offer
-                  ? listing.type === "sale"
-                    ? `₹ ${listing.discountedPrice}` 
-                    : `${listing.discountedPrice} ₹ /month` 
-                  : listing.type === "sale"
-                  ? `${listing.regularPrice}` 
-                  : `${listing.regularPrice} ₹ /month`
-              }
+            <h1 className="  font-bold text-2xl tracking-wide">
+            {listing.offer
+                    ? listing.type === "sale"
+                      ? `₹ ${listing.discountedPrice.toLocaleString('en-IN')}`
+                      : `${listing.discountedPrice.toLocaleString('en-IN')} ₹ / month`
+                    : listing.type === "rent"
+                    ? `${listing.regularPrice.toLocaleString('en-IN')} ₹ / month`
+                    : `₹ ${listing.regularPrice.toLocaleString('en-IN')}`}
             </h1>
           </div>
           <div className="flex items-center bg-red-800 max-w-xs rounded-lg text-white gap-1 p-2">

@@ -1,13 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { FaFilter } from "react-icons/fa";
-import { FaLocationDot } from "react-icons/fa6";
-import { FaBed, FaBath } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import ListingItem from "./ListingItem";
 
 export default function Search() {
   const [listingData, setListingData] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showMore, setShowMore] = useState(false);
   const [sideBarData, setSideBarData] = useState({
     searchTerm: "",
     type: "all",
@@ -92,12 +92,19 @@ export default function Search() {
     const getData = async () => {
       const searchQuery = urlParams.toString();
       try {
+        setShowMore(false);
         setLoading(true);
         const res = await axios.get(`/api/listing/get?${searchQuery}`, {
           headers: {
             "Content-Type": "application/json",
           },
         });
+        if(res.data.length > 8){
+          setShowMore(true);
+        }
+        else{
+          setShowMore(false);
+        }
         setLoading(false);
         setListingData(res.data);
       } catch (error) {
@@ -107,10 +114,24 @@ export default function Search() {
     getData();
   }, [location.search]);
 
+  const showMoreClick = async() => {
+    const numberOfListings = listingData.length;
+    const startIndex = numberOfListings;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
+    const res = await axios.get(`/api/listing/get?${searchQuery}`)
+    if(res.data.length < 9){
+      setShowMore(false);
+    }
+    const rest = res.data;
+    setListingData([...listingData, ...rest]);
+  }
+
   return (
     <div className="flex flex-col h-screen gap-5 md:flex-row">
       <form
-        className="lg:flex flex-col gap-10 px-5 pt-10 border bg-zinc-200"
+        className="flex flex-col gap-10 px-5 pt-10 border bg-zinc-200"
         onSubmit={handleSubmit}
       >
         <div className="flex items-center gap-3 justify-between">
@@ -191,7 +212,7 @@ export default function Search() {
           </select>
         </div>
         <button className="uppercase rounded-full bg-slate-700 text-white p-3 hover:opacity-80">
-          Submit
+          Filter
         </button>
       </form>
       <div className="pt-10 w-full overflow-y-scroll">
@@ -206,60 +227,10 @@ export default function Search() {
         ) : listingData.length === 0 ? (
           <h1 className="flex justify-center items-center mt-60 font-semibold text-4xl">No Listing Found</h1>
         ) : (
-          <div className="flex gap-3 mt-10 flex-wrap ">
-            {listingData &&
-              listingData.map((item) => {
-                return (
-                  <div
-                    key={item._id}
-                    className="max-h-screen border shadow-lg rounded-lg w-full sm:w-[300px] md:w-[350px]"
-                  >
-                    <div className="overflow-hidden">
-                      <Link to={`/listing/${item._id}`}>
-                        <img
-                          className="w-full object-cover h-60 rounded-lg cursor-pointer transition-transform duration-300 transform hover:scale-110"
-                          src={item.imageUrls}
-                          alt="listing-image"
-                        />
-                      </Link>
-                    </div>
-                    <div className="p-3 flex flex-col justify-center gap-3">
-                      <h1 className="font-bold text-lg">{item.name}</h1>
-                      <p className="flex items-center gap-2 text-sm">
-                        <FaLocationDot size={10} /> {item.address.slice(0, 30)}
-                      </p>
-                      <p className="text-md">
-                        {item.description.slice(0, 30)}...
-                      </p>
-                      <p className="font-bold text-lg tracking-wide">
-                        {item.offer
-                          ? item.type === "sale"
-                            ? `₹ ${item.discountedPrice}`
-                            : `${item.discountedPrice} ₹ / month`
-                          : item.type === "sale"
-                          ? `₹ ${item.discountedPrice}`
-                          : `${item.discountedPrice} ₹ / month`}
-                      </p>
-                      <div className="flex items-center text-sm justify-between">
-                        <div className="flex items-center gap-2">
-                          <p className="flex items-center gap-2">
-                            {item.bedrooms} <FaBed />{" "}
-                          </p>
-                          <p className="flex items-center gap-2">
-                            {item.bathrooms} <FaBath />{" "}
-                          </p>
-                        </div>
-                        <span
-                          className={`font-bold ${
-                            item.type === "sale" ? "bg-green-700" : "bg-red-700"
-                          } px-5 rounded-lg uppercase text-white`}
-                        >{`For ${item.type}`}</span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-          </div>
+            <ListingItem listingData = {listingData}/>
+        )}
+        {showMore && (
+          <button onClick={showMoreClick} className=" text-green-700 hover:underline p-7 text-center w-full">Show More</button>
         )}
       </div>
     </div>
