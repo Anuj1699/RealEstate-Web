@@ -2,12 +2,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { FaFilter } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import ListingItem from "./ListingItem";
+import ListingItem from "../components/ListingItem";
 
 export default function Search() {
   const [listingData, setListingData] = useState("");
   const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
+  const [openClose, setOpenClose] = useState(false);
   const [sideBarData, setSideBarData] = useState({
     searchTerm: "",
     type: "all",
@@ -99,10 +100,9 @@ export default function Search() {
             "Content-Type": "application/json",
           },
         });
-        if(res.data.length > 8){
+        if (res.data.length > 8) {
           setShowMore(true);
-        }
-        else{
+        } else {
           setShowMore(false);
         }
         setLoading(false);
@@ -114,26 +114,29 @@ export default function Search() {
     getData();
   }, [location.search]);
 
-  const showMoreClick = async() => {
+  const showMoreClick = async () => {
     const numberOfListings = listingData.length;
     const startIndex = numberOfListings;
     const urlParams = new URLSearchParams(location.search);
     urlParams.set("startIndex", startIndex);
     const searchQuery = urlParams.toString();
-    const res = await axios.get(`/api/listing/get?${searchQuery}`)
-    if(res.data.length < 9){
+    const res = await axios.get(`/api/listing/get?${searchQuery}`);
+    if (res.data.length < 9) {
       setShowMore(false);
     }
     const rest = res.data;
     setListingData([...listingData, ...rest]);
-  }
+  };
+
+  const handleOpenClose = () => {
+    setOpenClose(!openClose)
+  };
 
   return (
-    <div className="flex flex-col h-screen gap-5 md:flex-row">
+    <div className="flex flex-col h-screen gap-5 md:flex-row p-5">
       <form
-        className="flex flex-col gap-10 px-5 pt-10 border bg-zinc-200"
-        onSubmit={handleSubmit}
-      >
+        className={`${openClose ? "visible" : "hidden"} lg:visible flex flex-col gap-10 px-5 pt-10 border bg-zinc-200`}
+        onSubmit={handleSubmit}>
         <div className="flex items-center gap-3 justify-between">
           <h1 className="font-bold text-3xl tracking-wider">Filters</h1>
           <FaFilter size={30} />
@@ -216,21 +219,42 @@ export default function Search() {
         </button>
       </form>
       <div className="pt-10 w-full overflow-y-scroll">
-        <h1 className="font-bold text-3xl tracking-wider">Listing Results :</h1>
-        {loading ? (
-        <div className="flex justify-center items-center mt-60">
-          <svg
-            className="animate-spin h-10 w-10 border-t-4 border-b-4 border-gray-500 rounded-full"
-            viewBox="0 0 24 24"
-          ></svg>
+        <div className="flex items-center gap-10">
+          <h1 className="font-bold text-2xl tracking-wider lg:text-3xl">
+            Listing Results :
+          </h1>
+          <FaFilter
+            size={20}
+            onClick={handleOpenClose}
+            className="cursor-pointer"
+          />
         </div>
+        {loading ? (
+          <div className="flex justify-center items-center mt-60">
+            <svg
+              className="animate-spin h-10 w-10 border-t-4 border-b-4 border-gray-500 rounded-full"
+              viewBox="0 0 24 24"
+            ></svg>
+          </div>
         ) : listingData.length === 0 ? (
-          <h1 className="flex justify-center items-center mt-60 font-semibold text-4xl">No Listing Found</h1>
+          <h1 className="flex justify-center items-center mt-60 font-semibold text-4xl">
+            No Listing Found
+          </h1>
         ) : (
-            <ListingItem listingData = {listingData}/>
+          <div className="flex gap-3 mt-10 flex-wrap">
+            {listingData &&
+              listingData.map((item) => {
+                return <ListingItem key={item._id} item={item} />;
+              })}
+          </div>
         )}
         {showMore && (
-          <button onClick={showMoreClick} className=" text-green-700 hover:underline p-7 text-center w-full">Show More</button>
+          <button
+            onClick={showMoreClick}
+            className=" text-green-700 hover:underline p-7 text-center w-full"
+          >
+            Show More
+          </button>
         )}
       </div>
     </div>
